@@ -1,5 +1,7 @@
 const buttonContainer = document.querySelector('.button-container');
 
+Window.onload = createButtons();
+
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
   return a + b;

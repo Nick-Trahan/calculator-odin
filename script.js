@@ -1,4 +1,4 @@
-//These are the formulas that will run the calculations
+//These are the formulas that will run the calculations=======================//
 function add(a, b) {
   return a + b;
 }
@@ -20,6 +20,7 @@ function divide(a, b) {
     return a / b;
   }
 }
+//============================================================================//
 
 //This function determines which operation to run based on the given parameters
 function operate(num1, operator, num2) {

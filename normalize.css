@@ -351,23 +351,94 @@ template {
 /* Begin custom CSS
    ========================================================================== */
 
-/* * {
+* {
   box-sizing: border-box;
-} */
+}
+
+body {
+  height: 100vh;
+
+  background: linear-gradient(45deg, rgb(63,76,107) 0%,rgb(63,76,107) 100%);
+}
 
 .calc-body {
-  margin: 0 auto;
-
   display: grid;
   grid-template-areas:
   'display'
-  'container' 
+  'container';
+
+  margin: 5% auto;
+  width: 330px;
+
+  background: radial-gradient(ellipse at center, rgb(73,155,234) 0%,rgb(32,124,229) 100%);
+
+  border: 2px solid grey;
+  border-radius: 10px;
 }
 
 .calc-display {
+  display: flex;
+  flex-direction: row-reverse;
+
   grid-area: display;
+
+  width: 90%;
+  height: 3.5em;
+  margin-top: 5%;
+  margin-left: auto;
+  margin-right:  auto;
+
+  background-color: lightgray;
+
+  border: 2px solid grey;
+}
+
+.display-text {
+  align-self: flex-end;
+
+  margin: 0;
+
+  font-family: 'VT323', monospace;
+  font-size: 2.5em;
 }
 
 .button-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 5px;
+
   grid-area: container;
+
+  width: 300px;
+  margin: 5% auto;
+}
+
+.calc-button {
+  padding-top: 25%;
+  padding-bottom: 25%;
+
+  font-family: 'VT323', monospace;
+  font-size: 1.5em;
+
+  background: radial-gradient(ellipse at center, rgb(255,255,255) 0%,rgb(246,246,246) 47%,rgb(237,237,237) 100%);
+
+  border: 2px solid grey;
+}
+
+.calc-button:active {
+  transform: scale(0.95);
+  transition: 0.05s;
+
+  color: black; /*This keeps Safari from changing the button label's color to white while the button is clicked.*/
+}
+
+#button-add {
+  grid-row: span 2;
+}
+
+#button-equals {
+  grid-column: span 3;
+
+  padding-top: 8%;
+  padding-bottom: 8%;
 }

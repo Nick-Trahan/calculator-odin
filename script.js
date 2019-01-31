@@ -3,7 +3,7 @@ const textDisplay = document.querySelector('.display-text');
 
 Window.onload = createButtons();
 
-let userInput = [];//find a way to move this out of the global scope!!
+let userInput = [];//find a way to move this from the global scope!
 
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
@@ -64,17 +64,27 @@ function createButtons() {
   }
 }
 
-buttonContainer.addEventListener('click', event => captureInput(event.target));
+buttonContainer.addEventListener('click', (event) => {
+  if (event.target === buttonContainer) return;
+  captureInput(event.target.textContent);
+});
 
 function captureInput(element) {
-  if (userInput.length > 2) {
+  if (element === 'C') {
     userInput = [];
-  } 
+  } else {
+    userInput.push(element);
+  }
+
+  // for (let i = 0; i < userInput.length; i++) {
+  //   userInput.push(element);
+  // }
   
-  userInput.push(element.id);
   populateDisplay(userInput);
 }
 
 function populateDisplay(array) {
-  textDisplay.textContent = array;
+  let onScreenText = array.join('');
+
+  textDisplay.textContent = onScreenText;
 }

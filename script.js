@@ -1,6 +1,9 @@
 const buttonContainer = document.querySelector('.button-container');
+const textDisplay = document.querySelector('.display-text');
 
 Window.onload = createButtons();
+
+let userInput = [];//find a way to move this out of the global scope!!
 
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
@@ -24,7 +27,6 @@ function divide(a, b) {
     return a / b;
   }
 }
-//============================================================================//
 
 //This function determines which operation to run based on the given parameters
 function operate(num1, operator, num2) {
@@ -60,4 +62,19 @@ function createButtons() {
 
     buttonContainer.appendChild(calcButton);
   }
+}
+
+buttonContainer.addEventListener('click', event => captureInput(event.target));
+
+function captureInput(element) {
+  if (userInput.length > 2) {
+    userInput = [];
+  } 
+  
+  userInput.push(element.id);
+  populateDisplay(userInput);
+}
+
+function populateDisplay(array) {
+  textDisplay.textContent = array;
 }

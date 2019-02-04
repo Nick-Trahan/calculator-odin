@@ -69,17 +69,19 @@ buttonContainer.addEventListener('click', (event) => {
   captureInput(event.target.textContent);
 });
 
-function captureInput(element) {
-  if (element === 'C') {
+function captureInput(input) {
+  if (input === 'C') {// This allows the 'clear' button to function by simply emptying the userInput array
     userInput = [];
-  } else {
-    userInput.push(element);
-  }
 
-  // for (let i = 0; i < userInput.length; i++) {
-  //   userInput.push(element);
-  // }
-  
+    //if the first input is an operator (besides 'minus', that will indicate a negative value), disregard the input
+  } else if ((userInput.length === 0 && input === '+') || (userInput.length === 0 && input === 'x') || (userInput.length === 0 && input === '÷') || (userInput.length === 0 && input === '=')) {
+    return;
+
+  } else {
+    userInput.push(input);
+  }
+  // don't forget to account for negative values
+
   populateDisplay(userInput);
 }
 

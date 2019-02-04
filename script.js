@@ -6,6 +6,7 @@ const btnOperators = document.getElementsByClassName('operators');
 Window.onload = createButtons();
 
 let userInput = [];//find a way to move this from the global scope!
+let output;
 
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
@@ -87,22 +88,71 @@ function captureInput(input) {
     userInput = [];
 
     //If the first input is an operator (besides 'minus', that will indicate a negative value), disregard the input.
-  } else if ((userInput.length === 0) && 
+  } else if (
+      (userInput.length === 0) && 
       (input.classList[1] === 'operators') && 
-      (input.textContent !== '-')) {
+      (input.textContent !== '-')
+    ) {
     return;
 
+    //This will cause the program to ignore an operator click if the last click was also an operator.
+  } else if (
+      (userInput.length > 0) && 
+      (userInput[userInput.length - 1].classList[1] === 'operators') && 
+      (input.classList[1] === 'operators') && 
+      (input.textContent !== '-')
+    ) {
+    return;
+
+  // } else if (
+  //     (userInput.length > 1) && 
+  //     ((userInput[userInput.length - 1].textContent === '-') &&
+  //     (userInput[userInput.length - 2].textContent === '-')) && 
+  //     (input.textContent === '-')
+  //   ) {
+  //   return;
+
+  // } else if (
+  //     (userInput.length === 1) && 
+  //     (userInput[userInput.length - 1].textContent === '-') && 
+  //     (input.textContent === '-')
+  // ) {
+  // return;
+
+  // } else if (input.textContent === '-') {
+  //   if (
+  //      (userInput.length === 1) && 
+  //      (userInput[userInput.length - 1].textContent === '-')
+  //   ) {
+  //   return;
+  //   } else if (
+  //       (userInput.length > 1) && 
+  //       (userInput[userInput.length - 1].textContent === '-')
+         
+  //   ) {
+
+  //   }
+
   } else {
-    userInput.push(input.textContent);
+    userInput.push(input);
   }
+  console.log(userInput);
 
   // don't forget to account for negative values
 
-  populateDisplay(userInput);
+  validateInput(userInput);
+}
+
+function validateInput(array) {
+  output = array.map((element) => element.textContent);
+
+
+
+  populateDisplay(output);
 }
 
 function populateDisplay(array) {
   let onScreenText = array.join('');
-
+  
   textDisplay.textContent = onScreenText;
 }

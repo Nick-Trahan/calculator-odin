@@ -1,5 +1,7 @@
 const buttonContainer = document.querySelector('.button-container');
 const textDisplay = document.querySelector('.display-text');
+const btnNumbers = document.getElementsByClassName('numbers');
+const btnOperators = document.getElementsByClassName('operators');
 
 Window.onload = createButtons();
 
@@ -50,13 +52,13 @@ function operate(num1, operator, num2) {
 
 //Generates the calculator buttons============================================//
 function createButtons() {
-  const buttonLabels = [['1', 'one'], ['2', 'two'], ['3', 'three'], ['÷', 'divide'], ['4', 'four'], ['5', 'five'], ['6', 'six'], ['x', 'multiply'], ['7', 'seven'], ['8', 'eight'], ['9', 'nine'], ['-', 'subtract'], ['C', 'clear'], ['0', 'zero'], ['.', 'decimal'], ['+', 'add'], ['=', 'equals']];
+  const buttonLabels = [['1', 'one', 'numbers'], ['2', 'two', 'numbers'], ['3', 'three', 'numbers'], ['÷', 'divide', 'operators'], ['4', 'four', 'numbers'], ['5', 'five', 'numbers'], ['6', 'six', 'numbers'], ['x', 'multiply', 'operators'], ['7', 'seven', 'numbers'], ['8', 'eight', 'numbers'], ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'], ['C', 'clear', 'special'], ['0', 'zero', 'numbers'], ['.', 'decimal', 'special'], ['+', 'add', 'operators'], ['=', 'equals', 'operators']];
 
   for (let i = 0; i < buttonLabels.length; i++) {
     const calcButton = document.createElement('button');
 
     calcButton.setAttribute('id', 'button-' + buttonLabels[i][1]);
-    calcButton.setAttribute('class', 'calc-button');
+    calcButton.setAttribute('class', 'calc-button ' + buttonLabels[i][2]);
 
     calcButton.textContent = buttonLabels[i][0];
 
@@ -66,19 +68,22 @@ function createButtons() {
 
 buttonContainer.addEventListener('click', (event) => {
   if (event.target === buttonContainer) return;
-  captureInput(event.target.textContent);
+  captureInput(event.target);
 });
 
 function captureInput(input) {
-  if (input === 'C') {// This allows the 'clear' button to function by simply emptying the userInput array
+  
+  console.log(input.classList[1]);
+
+  if (input.textContent === 'C') {// This allows the 'clear' button to function by simply emptying the userInput array
     userInput = [];
 
     //if the first input is an operator (besides 'minus', that will indicate a negative value), disregard the input
-  } else if ((userInput.length === 0 && input === '+') || (userInput.length === 0 && input === 'x') || (userInput.length === 0 && input === '÷') || (userInput.length === 0 && input === '=')) {
+  } else if ((userInput.length === 0 && input.textContent === '+') || (userInput.length === 0 && input.textContent === 'x') || (userInput.length === 0 && input.textContent === '÷') || (userInput.length === 0 && input.textContent === '=')) {
     return;
 
   } else {
-    userInput.push(input);
+    userInput.push(input.textContent);
   }
   // don't forget to account for negative values
 

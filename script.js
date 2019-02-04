@@ -54,15 +54,15 @@ function operate(num1, operator, num2) {
 //Generates the calculator buttons============================================//
 function createButtons() {
   const buttonLabels = [
-    ['1', 'one', 'numbers'], ['2', 'two', 'numbers'], 
-    ['3', 'three', 'numbers'], ['÷', 'divide', 'operators'], 
-    ['4', 'four', 'numbers'], ['5', 'five', 'numbers'], 
-    ['6', 'six', 'numbers'], ['x', 'multiply', 'operators'], 
-    ['7', 'seven', 'numbers'], ['8', 'eight', 'numbers'], 
-    ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'], 
-    ['C', 'clear', 'special'], ['0', 'zero', 'numbers'], 
-    ['.', 'decimal', 'special'], ['+', 'add', 'operators'], 
-    ['=', 'equals', 'operators']
+    ['1', 'one', 'numbers'], ['2', 'two', 'numbers'],
+    ['3', 'three', 'numbers'], ['÷', 'divide', 'operators'],
+    ['4', 'four', 'numbers'], ['5', 'five', 'numbers'],
+    ['6', 'six', 'numbers'], ['x', 'multiply', 'operators'],
+    ['7', 'seven', 'numbers'], ['8', 'eight', 'numbers'],
+    ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'],
+    ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
+    ['.', 'decimal', 'special'], ['+', 'add', 'operators'],
+    ['=', 'equals', 'special']
   ];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -89,49 +89,39 @@ function captureInput(input) {
 
     //If the first input is an operator (besides 'minus', that will indicate a negative value), disregard the input.
   } else if (
-      (userInput.length === 0) && 
-      (input.classList[1] === 'operators') && 
-      (input.textContent !== '-')
-    ) {
+    (userInput.length === 0) &&
+    (input.classList[1] === 'operators') &&
+    (input.textContent !== '-')
+  ) {
     return;
 
     //This will cause the program to ignore an operator click if the last click was also an operator.
   } else if (
-      (userInput.length > 0) && 
-      (userInput[userInput.length - 1].classList[1] === 'operators') && 
-      (input.classList[1] === 'operators') && 
-      (input.textContent !== '-')
-    ) {
+    (userInput.length > 0) &&
+    (userInput[userInput.length - 1].classList[1] === 'operators') &&
+    (input.classList[1] === 'operators') &&
+    (input.textContent !== '-')
+  ) {
     return;
 
-  // } else if (
-  //     (userInput.length > 1) && 
-  //     ((userInput[userInput.length - 1].textContent === '-') &&
-  //     (userInput[userInput.length - 2].textContent === '-')) && 
-  //     (input.textContent === '-')
-  //   ) {
-  //   return;
+    //This is how the program decides if the '-' will be used as the subtraction operator or a negative indicator.
+  } else if (input.textContent === '-') {
+    if (
+      (userInput.length === 1) &&
+      (userInput[userInput.length - 1].textContent === '-')
+    ) {
+      return;
 
-  // } else if (
-  //     (userInput.length === 1) && 
-  //     (userInput[userInput.length - 1].textContent === '-') && 
-  //     (input.textContent === '-')
-  // ) {
-  // return;
+    } else if (
+      (userInput.length > 1) &&
+      ((userInput[userInput.length - 1].textContent === '-') &&
+        (userInput[userInput.length - 2].textContent === '-'))
+    ) {
+      return;
 
-  // } else if (input.textContent === '-') {
-  //   if (
-  //      (userInput.length === 1) && 
-  //      (userInput[userInput.length - 1].textContent === '-')
-  //   ) {
-  //   return;
-  //   } else if (
-  //       (userInput.length > 1) && 
-  //       (userInput[userInput.length - 1].textContent === '-')
-         
-  //   ) {
-
-  //   }
+    } else {
+      userInput.push(input);
+    }
 
   } else {
     userInput.push(input);
@@ -153,6 +143,6 @@ function validateInput(array) {
 
 function populateDisplay(array) {
   let onScreenText = array.join('');
-  
+
   textDisplay.textContent = onScreenText;
 }

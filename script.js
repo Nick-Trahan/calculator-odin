@@ -1,11 +1,12 @@
 const buttonContainer = document.querySelector('.button-container');
+const upperDisplay = document.querySelector('.display-upper');
 const lowerDisplay = document.querySelector('.display-lower');
 const btnNumbers = document.getElementsByClassName('numbers');
 const btnOperators = document.getElementsByClassName('operators');
 
 Window.onload = createButtons();
 
-let userInput = [];//find a way to move this from the global scope!
+let userInput = '';//find a way to move this from the global scope!
 let output;
 
 //These are the formulas that will run the calculations=======================//
@@ -61,8 +62,13 @@ function createButtons() {
     ['7', 'seven', 'numbers'], ['8', 'eight', 'numbers'],
     ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'],
     ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
-    ['.', 'decimal', 'special'], ['+', 'add', 'operators'],
+    ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
+    /*
+    Handling of the decimal point is an extra credit assignment for this 
+    project. I'll program its logic once the main project is complete. It's 
+    there as a placeholder for now. 
+    */
   ];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -83,50 +89,28 @@ buttonContainer.addEventListener('click', (event) => {
 });
 
 function captureInput(input) {
-  //This allows the 'clear' button to function by simply emptying the userInput array.
-  if (input.textContent === 'C') {
-    userInput = [];
+  switch (input.classList[1]) {
+    case 'numbers':
+      userInput += input.textContent;
+      break;
 
-    //If the first input is an operator (besides 'minus', that will indicate a negative value), disregard the input.
-  } else if (
-    (userInput.length === 0) &&
-    (input.classList[1] === 'operators') &&
-    (input.textContent !== '-')
-  ) {
-    return;
+    case 'special':
+      //This allows the 'clear' button to function by simply emptying the userInput variable.
+      if (input.textContent === 'C') {
+        userInput = '';
 
-    //This will cause the program to ignore an operator click if the last click was also an operator.
-  } else if (
-    (userInput.length > 0) &&
-    (userInput[userInput.length - 1].classList[1] === 'operators') &&
-    (input.classList[1] === 'operators') &&
-    (input.textContent !== '-')
-  ) {
-    return;
+      } else if (input.textContent === '='){
+        return;//**Placeholder** Send to operate() function later
+      }
+      break;
 
-    //This is how the program decides if the '-' will be used as the subtraction operator or a negative indicator.
-  } else if (input.textContent === '-') {
-    if (
-      (userInput.length === 1 &&
-        userInput[userInput.length - 1].textContent === '-')
-    ) {
-      return;
+    case 'operators':
+      break;
 
-    } else if (
-      (userInput.length > 1) &&
-      ((userInput[userInput.length - 1].textContent === '-') &&
-        ((userInput[userInput.length - 2].textContent === '-') ||
-          (userInput[userInput.length - 2].classList[1] === 'operators')))
-    ) {
-      return;
-
-    } else {
-      userInput.push(input);
-    }
-
-  } else {
-    userInput.push(input);
+    case 'extra-credit':
+      break;
   }
+  
   console.log(userInput);
 
   // don't forget to account for negative values
@@ -135,15 +119,15 @@ function captureInput(input) {
 }
 
 function validateInput(array) {
-  output = array.map((element) => element.textContent);
+  // output = array.map((element) => element.textContent);
 
 
 
-  populateDisplay(output);
+  // populateDisplay(output);
 }
 
 function populateDisplay(array) {
-  let onScreenText = array.join('');
-
-  lowerDisplay.textContent = onScreenText;
+  // let onScreenText = array.join('');
+  // 
+  // lowerDisplay.textContent = onScreenText;
 }

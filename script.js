@@ -107,15 +107,16 @@ function captureInput(input) {
     //This is how the program decides if the '-' will be used as the subtraction operator or a negative indicator.
   } else if (input.textContent === '-') {
     if (
-      (userInput.length === 1) &&
-      (userInput[userInput.length - 1].textContent === '-')
+      (userInput.length === 1 &&
+        userInput[userInput.length - 1].textContent === '-')
     ) {
       return;
 
     } else if (
       (userInput.length > 1) &&
       ((userInput[userInput.length - 1].textContent === '-') &&
-        (userInput[userInput.length - 2].textContent === '-'))
+        ((userInput[userInput.length - 2].textContent === '-') ||
+          (userInput[userInput.length - 2].classList[1] === 'operators')))
     ) {
       return;
 

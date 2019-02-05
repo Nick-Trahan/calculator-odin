@@ -1,5 +1,5 @@
 const buttonContainer = document.querySelector('.button-container');
-const textDisplay = document.querySelector('.display-text');
+const lowerDisplay = document.querySelector('.display-lower');
 const btnNumbers = document.getElementsByClassName('numbers');
 const btnOperators = document.getElementsByClassName('operators');
 
@@ -145,5 +145,5 @@ function validateInput(array) {
 function populateDisplay(array) {
   let onScreenText = array.join('');
 
-  textDisplay.textContent = onScreenText;
+  lowerDisplay.textContent = onScreenText;
 }

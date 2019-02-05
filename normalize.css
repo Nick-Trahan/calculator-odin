@@ -377,9 +377,6 @@ body {
 }
 
 .calc-display {
-  display: flex;
-  flex-direction: row-reverse;
-
   grid-area: display;
 
   width: 90%;
@@ -391,15 +388,23 @@ body {
   background-color: lightgray;
 
   border: 2px solid grey;
-}
-
-.display-text {
-  align-self: flex-end;
-
-  margin: 0;
 
   font-family: 'VT323', monospace;
-  font-size: 2.5em;
+}
+
+.calc-display > p {
+  margin: 0;
+}
+
+.display-upper {
+  font-size: 1.45em;
+}
+
+.display-lower {
+  display: flex;
+  flex-direction: row-reverse;
+
+  font-size: 2.35em;
 }
 
 .button-container {

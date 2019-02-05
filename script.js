@@ -8,6 +8,7 @@ Window.onload = createButtons();
 
 let userInput = '';//find a way to move this from the global scope!
 let output;
+let inputHist = [];
 
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
@@ -95,9 +96,10 @@ function captureInput(input) {
       break;
 
     case 'special':
-      //This allows the 'clear' button to function by simply emptying the userInput variable.
+      //This allows the 'clear' button to function by simply emptying the userInput and inputHist variables.
       if (input.textContent === 'C') {
         userInput = '';
+        inputHist = [];
 
       } else if (input.textContent === '='){
         return;//**Placeholder** Send to operate() function later
@@ -105,6 +107,22 @@ function captureInput(input) {
       break;
 
     case 'operators':
+      if (inputHist.length === 0 && userInput.length > 0) {
+        inputHist[0] = userInput;
+        inputHist[1] = input.textContent;
+        userInput = '';
+        console.log(inputHist);
+
+      // } else if (inputHist.length > 0 && userInput.length > 0){
+      //   return;
+
+      } else if (input.textContent === '-'){
+        return;
+
+      } else if (input.textContent === '='){
+        return;
+
+      }
       break;
 
     case 'extra-credit':
@@ -115,19 +133,12 @@ function captureInput(input) {
 
   // don't forget to account for negative values
 
-  validateInput(userInput);
+  populateDisplay(userInput, inputHist);
 }
 
-function validateInput(array) {
-  // output = array.map((element) => element.textContent);
+function populateDisplay(string, array) {
+  let upperDisplayText = array.join(' ');
 
-
-
-  // populateDisplay(output);
-}
-
-function populateDisplay(array) {
-  // let onScreenText = array.join('');
-  // 
-  // lowerDisplay.textContent = onScreenText;
+  upperDisplay.textContent = upperDisplayText; 
+  lowerDisplay.textContent = string;
 }

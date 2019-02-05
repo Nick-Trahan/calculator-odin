@@ -6,7 +6,8 @@ const btnOperators = document.getElementsByClassName('operators');
 
 Window.onload = createButtons();
 
-let userInput = '';//find a way to move this from the global scope!
+//find a way to move these from the global scope
+let userInput = '';
 let output;
 let inputHist = [];
 
@@ -34,22 +35,22 @@ function divide(a, b) {
 }
 
 //This function determines which operation to run based on the given parameters
-function operate(num1, operator, num2) {
-  switch (operator) {
+function operate(array) {
+  switch (array[1]) {
     case '+':
-      return add(num1, num2);
+      return add(array[0], array[2]);
 
     case '-':
-      return subtract(num1, num2);
+      return subtract(array[0], array[2]);
 
     case '*':
-      return multiply(num1, num2);
+      return multiply(array[0], array[2]);
 
     case '/':
-      return divide(num1, num2);
+      return divide(array[0], array[2]);
 
     default:
-      return 'Sorry, ' + operator + ' isn\'t a valid operator';
+      return 'Sorry, ' + array[1] + ' isn\'t a valid operator';
   }
 }
 
@@ -102,13 +103,19 @@ function captureInput(input) {
         inputHist = [];
 
       } else if (input.textContent === '='){
-        return;//**Placeholder** Send to operate() function later
+        if (inputHist.length > 1 && userInput.length > 0) {
+          inputHist[2] = Number(userInput);
+          userInput = '';
+          userInput = operate(inputHist);
+          console.log(userInput);
+        }
+        return;
       }
       break;
 
     case 'operators':
       if (inputHist.length === 0 && userInput.length > 0) {
-        inputHist[0] = userInput;
+        inputHist[0] = Number(userInput);
         inputHist[1] = input.textContent;
         userInput = '';
         console.log(inputHist);
@@ -117,13 +124,8 @@ function captureInput(input) {
       //   return;
 
       } else if (input.textContent === '-'){
-        return;
-
-      } else if (input.textContent === '='){
-        return;
-
+        break;
       }
-      break;
 
     case 'extra-credit':
       break;

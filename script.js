@@ -13,24 +13,24 @@ let inputHist = [];
 
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
-  return a + b;
+  return (a + b).toFixed(2);
 }
 
 function subtract(a, b) {
-  return a - b;
+  return (a - b).toFixed(2);
 }
 
 function multiply(a, b) {
-  return a * b;
+  return (a * b).toFixed(2);
 }
 
 function divide(a, b) {
   //If the user attempts to divide by zero, they'll get an error message
   if (b === 0) {
-    return 'Can\'t divide by zero!!';
+    return 'ಠ_ಠ';
 
   } else {
-    return a / b;
+    return (a / b).toFixed(2);
   }
 }
 
@@ -43,10 +43,10 @@ function operate(array) {
     case '-':
       return subtract(array[0], array[2]);
 
-    case '*':
+    case 'x':
       return multiply(array[0], array[2]);
 
-    case '/':
+    case '÷':
       return divide(array[0], array[2]);
 
     default:
@@ -67,9 +67,9 @@ function createButtons() {
     ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
     /*
-    Handling of the decimal point is an extra credit assignment for this 
-    project. I'll program its logic once the main project is complete. It's 
-    there as a placeholder for now. 
+    Handling of the decimal point is an extra credit assignment for this
+    project. I'll program its logic once the main project is complete. It's
+    there as a placeholder for now.
     */
   ];
 
@@ -93,20 +93,24 @@ buttonContainer.addEventListener('click', (event) => {
 function captureInput(input) {
   switch (input.classList[1]) {
     case 'numbers':
+      if (inputHist.length === 4) {
+        clearDisplay();
+      }
       userInput += input.textContent;
       break;
 
     case 'special':
       //This allows the 'clear' button to function by simply emptying the userInput and inputHist variables.
       if (input.textContent === 'C') {
-        userInput = '';
-        inputHist = [];
+        clearDisplay();
 
-      } else if (input.textContent === '='){
+      } else if (input.textContent === '=') {
         if (inputHist.length > 1 && userInput.length > 0) {
           inputHist[2] = Number(userInput);
+          inputHist[3] = input.textContent;
           userInput = '';
           userInput = operate(inputHist);
+          populateDisplay(userInput, inputHist);
           console.log(userInput);
         }
         return;
@@ -120,17 +124,21 @@ function captureInput(input) {
         userInput = '';
         console.log(inputHist);
 
-      // } else if (inputHist.length > 0 && userInput.length > 0){
-      //   return;
+      } else if (inputHist.length === 4) {
+        inputHist[0] = userInput;
+        inputHist[1] = input.textContent;
+        inputHist.splice(2, 2);
+        userInput = '';
+        //   return;
 
-      } else if (input.textContent === '-'){
+      } else if (input.textContent === '-') {
         break;
       }
 
     case 'extra-credit':
       break;
   }
-  
+
   console.log(userInput);
 
   // don't forget to account for negative values
@@ -141,6 +149,11 @@ function captureInput(input) {
 function populateDisplay(string, array) {
   let upperDisplayText = array.join(' ');
 
-  upperDisplay.textContent = upperDisplayText; 
+  upperDisplay.textContent = upperDisplayText;
   lowerDisplay.textContent = string;
+}
+
+function clearDisplay() {
+  userInput = '';
+  inputHist = [];
 }

@@ -111,6 +111,14 @@ function captureInput(input) {
           userInput = '';
           userInput = operate(inputHist);
           populateDisplay(userInput, inputHist);
+          inputHist[0] = Number(userInput); 
+          /* 
+          The above line sets the result of the calculation as the first 
+          operand. This is to enable the user to quickly perform the next 
+          calculation by pressing the desired operator(as opposed to having to 
+          start from 0 zero each time.). The user can begin a new calculation
+          by inputting a new number.
+          */
           console.log(userInput);
         }
         return;

@@ -112,7 +112,6 @@ function captureInput(input) {
           userInput = operate(inputHist);
           populateDisplay(userInput, inputHist);
           inputHist[0] = Number(userInput); 
-
           /* 
           The above line sets the result of the calculation as the first 
           operand. This is to enable the user to quickly perform the next 
@@ -133,8 +132,9 @@ function captureInput(input) {
         userInput = '';
         console.log(inputHist);
 
-      } else if (inputHist.length === 4) {
-        inputHist[0] = userInput;
+      } else if (inputHist.length === 2) {
+        inputHist[2] = Number(userInput);
+        inputHist[0] = Number(operate(inputHist));
         inputHist[1] = input.textContent;
         inputHist.splice(2, 2);
         userInput = '';

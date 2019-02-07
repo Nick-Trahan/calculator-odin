@@ -112,6 +112,7 @@ function captureInput(input) {
           userInput = operate(inputHist);
           populateDisplay(userInput, inputHist);
           inputHist[0] = Number(userInput); 
+
           /* 
           The above line sets the result of the calculation as the first 
           operand. This is to enable the user to quickly perform the next 

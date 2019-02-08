@@ -94,8 +94,14 @@ function captureInput(input) {
     case 'numbers':
       if (inputHist.length === 4) {
         clearDisplay();
+
+      } else if (userInput.length > 12) {
+        return;
+
+      } else {
+        userInput += input.textContent;
       }
-      userInput += input.textContent;
+
       break;
 
     case 'special':
@@ -109,15 +115,20 @@ function captureInput(input) {
           inputHist[3] = input.textContent;
           userInput = '';
           userInput = operate(inputHist);
-          populateDisplay(userInput, inputHist);
 
+          if (userInput.length > 12) {
+            userInput = 'ERROR :\'(';
+          }
+
+          populateDisplay(userInput, inputHist);
+          
           /*
-           * If the user tried to divide by zero, the state will reset to avoid
-           * any potential errors. Else, the result of the last calculation will
-           * be passed to the first slot in inputHist so the user can quickly move
-           * onto the next calculation.
+           * If the user tried to divide by zero, or they received an error, the
+           * state will reset to avoid any potential errors. Else, the result of 
+           * the last calculation will be passed to the first slot in inputHist 
+           * so the user can quickly move onto the next calculation.
            */
-          (userInput === 'ಠ_ಠ') ? clearDisplay() :
+          (userInput === 'ಠ_ಠ' || userInput === 'ERROR :\'(') ? clearDisplay() :
               inputHist[0] = Number(userInput);
         }
         return;
@@ -143,11 +154,12 @@ function captureInput(input) {
           inputHist[1] = input.textContent;
           inputHist.splice(2, 2);
           userInput = '';
+          
         } else {
           inputHist[1] = input.textContent;
         }
 
-        /**
+        /*
          * This block accounts for when a user clicks an operator after just
          * completing another calculation.
          */

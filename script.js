@@ -138,7 +138,12 @@ function captureInput(input) {
         inputHist[1] = input.textContent;
         inputHist.splice(2, 2);
         userInput = '';
-        //   return;
+
+      } else if (inputHist.length === 4 && userInput.length > 0) {
+        inputHist[0] = Number(userInput);
+        inputHist[1] = input.textContent;
+        inputHist.splice(2, 2);
+        userInput = '';
 
       } else if (input.textContent === '-') {
         break;

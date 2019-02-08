@@ -110,12 +110,13 @@ function captureInput(input) {
         clearDisplay();
 
       } else if (input.textContent === '=') {
-        if (inputHist.length > 1 && userInput.length > 0) {
+        if (inputHist.length > 1 && inputHist.length != 4 && userInput.length > 0) {
           inputHist[2] = Number(userInput);
           inputHist[3] = input.textContent;
           userInput = '';
           userInput = operate(inputHist);
 
+          // This is to prevent overflowing the display.
           if (userInput.length > 12) {
             userInput = 'ERROR :\'(';
           }
@@ -154,7 +155,7 @@ function captureInput(input) {
           inputHist[1] = input.textContent;
           inputHist.splice(2, 2);
           userInput = '';
-          
+
         } else {
           inputHist[1] = input.textContent;
         }

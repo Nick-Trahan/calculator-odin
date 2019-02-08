@@ -8,7 +8,6 @@ Window.onload = createButtons();
 
 //find a way to move these from the global scope
 let userInput = '';
-let output;
 let inputHist = [];
 
 //These are the formulas that will run the calculations=======================//
@@ -111,14 +110,15 @@ function captureInput(input) {
           userInput = '';
           userInput = operate(inputHist);
           populateDisplay(userInput, inputHist);
-          inputHist[0] = Number(userInput); 
-          /* 
-          The above line sets the result of the calculation as the first 
-          operand. This is to enable the user to quickly perform the next 
-          calculation by pressing the desired operator(as opposed to having to 
-          start from 0 zero each time.). The user can begin a new calculation
-          by inputting a new number.
-          */
+
+          (userInput === 'ಠ_ಠ') ? clearDisplay() :
+              inputHist[0] = Number(userInput);
+          /**
+           * If the user tried to divide by zero, the state will reset to avoid
+           * any potential errors. Else, the result of the last calculation will
+           * be passed to the first slot in inputHist so the user can quickly move
+           * onto the next calculation.
+           */
           console.log(userInput);
         }
         return;

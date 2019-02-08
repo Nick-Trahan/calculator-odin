@@ -65,10 +65,10 @@ function createButtons() {
     ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
     ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
-    /*
-    Handling of the decimal point is an extra credit assignment for this
-    project. I'll program its logic once the main project is complete. It's
-    there as a placeholder for now.
+   /*
+    *Handling of the decimal point is an extra credit assignment for this
+    *project. I'll program its logic once the main project is complete. It's
+    *there as a placeholder for now.
     */
   ];
 
@@ -111,15 +111,14 @@ function captureInput(input) {
           userInput = operate(inputHist);
           populateDisplay(userInput, inputHist);
 
-          (userInput === 'ಠ_ಠ') ? clearDisplay() :
-              inputHist[0] = Number(userInput);
-          /**
+          /*
            * If the user tried to divide by zero, the state will reset to avoid
            * any potential errors. Else, the result of the last calculation will
            * be passed to the first slot in inputHist so the user can quickly move
            * onto the next calculation.
            */
-          console.log(userInput);
+          (userInput === 'ಠ_ಠ') ? clearDisplay() :
+              inputHist[0] = Number(userInput);
         }
         return;
       }
@@ -130,15 +129,28 @@ function captureInput(input) {
         inputHist[0] = Number(userInput);
         inputHist[1] = input.textContent;
         userInput = '';
-        console.log(inputHist);
 
+       /*
+        * This block accounts for what happens when a user clicks an 
+        * operator to begin their next calculation instead of the equals sign.
+        * If they haven't input a number beforehand, the program assumes the 
+        * user wanted to change the operator.
+        */
       } else if (inputHist.length === 2) {
-        inputHist[2] = Number(userInput);
-        inputHist[0] = Number(operate(inputHist));
-        inputHist[1] = input.textContent;
-        inputHist.splice(2, 2);
-        userInput = '';
+        if (userInput.length > 0) {
+          inputHist[2] = Number(userInput);
+          inputHist[0] = Number(operate(inputHist));
+          inputHist[1] = input.textContent;
+          inputHist.splice(2, 2);
+          userInput = '';
+        } else {
+          inputHist[1] = input.textContent;
+        }
 
+        /**
+         * This block accounts for when a user clicks an operator after just
+         * completing another calculation.
+         */
       } else if (inputHist.length === 4 && userInput.length > 0) {
         inputHist[0] = Number(userInput);
         inputHist[1] = input.textContent;
@@ -151,10 +163,7 @@ function captureInput(input) {
 
     case 'extra-credit':
       break;
-  }
-
-  console.log(userInput);
-
+    }
   // don't forget to account for negative values
 
   populateDisplay(userInput, inputHist);

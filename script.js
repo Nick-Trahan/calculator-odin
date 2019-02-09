@@ -95,10 +95,9 @@ function captureInput(input) {
 
       } else if (userInput.length > 14) {
         return;
-
-      } else {
-        userInput += input.textContent;
       }
+
+      userInput += input.textContent;
       break;
 
     case 'special':

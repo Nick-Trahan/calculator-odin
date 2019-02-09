@@ -1,8 +1,6 @@
 const buttonContainer = document.querySelector('.button-container');
 const upperDisplay = document.querySelector('.display-upper');
 const lowerDisplay = document.querySelector('.display-lower');
-const btnNumbers = document.getElementsByClassName('numbers');
-const btnOperators = document.getElementsByClassName('operators');
 
 Window.onload = createButtons();
 
@@ -101,7 +99,6 @@ function captureInput(input) {
       } else {
         userInput += input.textContent;
       }
-
       break;
 
     case 'special':
@@ -125,9 +122,10 @@ function captureInput(input) {
           
           /*
            * If the user tried to divide by zero, or they received an error, the
-           * state will reset to avoid any potential errors. Else, the result of 
-           * the last calculation will be passed to the first slot in inputHist 
-           * so the user can quickly move onto the next calculation.
+           * state will reset to avoid any more potential errors. Else, the
+           * result of the last calculation will be passed to the first slot
+           * in inputHist so the user can quickly move onto the next 
+           * calculation.
            */
           (userInput === 'ಠ_ಠ' || userInput === 'ERROR :\'(') ? clearDisplay() :
               inputHist[0] = Number(userInput);
@@ -145,8 +143,6 @@ function captureInput(input) {
        /*
         * This block accounts for what happens when a user clicks an 
         * operator to begin their next calculation instead of the equals sign.
-        * If they haven't input a number beforehand, the program assumes the 
-        * user wanted to change the operator.
         */
       } else if (inputHist.length === 2) {
         if (userInput.length > 0) {
@@ -155,14 +151,18 @@ function captureInput(input) {
           inputHist[1] = input.textContent;
           inputHist.splice(2, 2);
           userInput = '';
-
+          
+          /*
+           *If the user doesn't input a number beforehand, the program assumes
+           *they wanted to change the operator.
+           */
         } else {
           inputHist[1] = input.textContent;
         }
 
         /*
          * This block accounts for when a user clicks an operator after just
-         * completing another calculation.
+         * completing another calculation with the equals sign.
          */
       } else if (inputHist.length === 4 && userInput.length > 0) {
         inputHist[0] = Number(userInput);

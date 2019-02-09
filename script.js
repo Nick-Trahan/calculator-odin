@@ -146,8 +146,16 @@ function captureInput(input) {
       } else if (inputHist.length === 2) {
         if (userInput.length > 0) {
           inputHist[2] = Number(userInput);
-          inputHist.splice(0, 3, Number(operate(inputHist)), input.textContent);
-          userInput = '';
+          //FIX DIVIDE BY ZERO BUG HERE (temp solution)
+          let calc = Number(operate(inputHist));
+
+          if (isNaN(calc)){
+            userInput = operate(inputHist);
+
+          } else {
+            inputHist.splice(0, 3, calc, input.textContent);
+            userInput = '';
+          }
           
           /*
            * If the user doesn't input a number beforehand, the program assumes
@@ -177,6 +185,10 @@ function captureInput(input) {
   // don't forget to account for negative values
 
   populateDisplay(userInput, inputHist);
+
+  if (userInput === 'ಠ_ಠ'){
+    clearDisplay();
+  }
 }
 
 function populateDisplay(string, array) {

@@ -64,9 +64,9 @@ function createButtons() {
     ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
    /*
-    *Handling of the decimal point is an extra credit assignment for this
-    *project. I'll program its logic once the main project is complete. It's
-    *there as a placeholder for now.
+    * Handling of the decimal point is an extra credit assignment for this
+    * project. I'll program its logic once the main project is complete. It's
+    * there as a placeholder for now.
     */
   ];
 
@@ -102,8 +102,8 @@ function captureInput(input) {
       break;
 
     case 'special':
-      /*This allows the 'clear' button to function by simply emptying the
-       *userInput and inputHist variables.
+      /* This allows the 'clear' button to function by simply emptying the
+       * userInput and inputHist variables.
        */
       if (input.textContent === 'C') {
         clearDisplay();
@@ -111,9 +111,7 @@ function captureInput(input) {
       } else if (input.textContent === '=') {
         if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
             0) {
-          inputHist[2] = Number(userInput);
-          inputHist[3] = input.textContent;
-          userInput = '';
+          inputHist.splice(2, 0, Number(userInput), input.textContent);
           userInput = operate(inputHist);
 
           // This is to prevent overflowing the display.
@@ -139,8 +137,7 @@ function captureInput(input) {
 
     case 'operators':
       if (inputHist.length === 0 && userInput.length > 0) {
-        inputHist[0] = Number(userInput);
-        inputHist[1] = input.textContent;
+        inputHist.unshift(Number(userInput), input.textContent);
         userInput = '';
 
        /*
@@ -150,14 +147,12 @@ function captureInput(input) {
       } else if (inputHist.length === 2) {
         if (userInput.length > 0) {
           inputHist[2] = Number(userInput);
-          inputHist[0] = Number(operate(inputHist));
-          inputHist[1] = input.textContent;
-          inputHist.splice(2, 2);
+          inputHist.splice(0, 3, Number(operate(inputHist)), input.textContent);
           userInput = '';
           
           /*
-           *If the user doesn't input a number beforehand, the program assumes
-           *they wanted to change the operator.
+           * If the user doesn't input a number beforehand, the program assumes
+           * they wanted to change the operator.
            */
         } else {
           inputHist[1] = input.textContent;
@@ -168,16 +163,16 @@ function captureInput(input) {
          * completing another calculation with the equals sign.
          */
       } else if (inputHist.length === 4 && userInput.length > 0) {
-        inputHist[0] = Number(userInput);
-        inputHist[1] = input.textContent;
-        inputHist.splice(2, 2);
+        inputHist.splice(0, 4, Number(userInput), input.textContent);
         userInput = '';
 
       } else if (input.textContent === '-') {
+        // Placeholder for extra credit assignment.
         break;
       }
 
     case 'extra-credit':
+      // Placeholder for extra credit assignment.
       break;
     }
   // don't forget to account for negative values

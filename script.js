@@ -93,7 +93,7 @@ function captureInput(input) {
       if (inputHist.length === 4) {
         clearDisplay();
 
-      } else if (userInput.length > 12) {
+      } else if (userInput.length > 14) {
         return;
 
       } else {
@@ -102,19 +102,22 @@ function captureInput(input) {
       break;
 
     case 'special':
-      //This allows the 'clear' button to function by simply emptying the userInput and inputHist variables.
+      /*This allows the 'clear' button to function by simply emptying the
+       *userInput and inputHist variables.
+       */
       if (input.textContent === 'C') {
         clearDisplay();
 
       } else if (input.textContent === '=') {
-        if (inputHist.length > 1 && inputHist.length != 4 && userInput.length > 0) {
+        if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
+            0) {
           inputHist[2] = Number(userInput);
           inputHist[3] = input.textContent;
           userInput = '';
           userInput = operate(inputHist);
 
           // This is to prevent overflowing the display.
-          if (userInput.length > 12) {
+          if (userInput.length > 14) {
             userInput = 'ERROR :\'(';
           }
 

@@ -63,11 +63,11 @@ function createButtons() {
     ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
     ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
-   /*
-    * Handling of the decimal point is an extra credit assignment for this
-    * project. I'll program its logic once the main project is complete. It's
-    * there as a placeholder for now.
-    */
+    /*
+     * Handling of the decimal point is an extra credit assignment for this
+     * project. I'll program its logic once the main project is complete. It's
+     * there as a placeholder for now.
+     */
   ];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -109,7 +109,7 @@ function captureInput(input) {
 
       } else if (input.textContent === '=') {
         if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
-            0) {
+          0) {
           inputHist.splice(2, 0, Number(userInput), input.textContent);
           userInput = operate(inputHist);
 
@@ -119,16 +119,6 @@ function captureInput(input) {
           }
 
           populateDisplay(userInput, inputHist);
-          
-          /*
-           * If the user tried to divide by zero, or they received an error, the
-           * state will reset to avoid any more potential errors. Else, the
-           * result of the last calculation will be passed to the first slot
-           * in inputHist so the user can quickly move onto the next 
-           * calculation.
-           */
-          (userInput === 'ಠ_ಠ' || userInput === 'ERROR :\'(') ? clearDisplay() :
-              inputHist[0] = Number(userInput);
         }
         return;
       }
@@ -139,24 +129,24 @@ function captureInput(input) {
         inputHist.unshift(Number(userInput), input.textContent);
         userInput = '';
 
-       /*
-        * This block accounts for what happens when a user clicks an 
-        * operator to begin their next calculation instead of the equals sign.
-        */
+        /*
+         * This block accounts for what happens when a user clicks an
+         * operator to begin their next calculation instead of the equals sign.
+         */
       } else if (inputHist.length === 2) {
         if (userInput.length > 0) {
           inputHist[2] = Number(userInput);
           //FIX DIVIDE BY ZERO BUG HERE (temp solution)
           let calc = Number(operate(inputHist));
 
-          if (isNaN(calc)){
+          if (isNaN(calc)) {
             userInput = operate(inputHist);
 
           } else {
             inputHist.splice(0, 3, calc, input.textContent);
             userInput = '';
           }
-          
+
           /*
            * If the user doesn't input a number beforehand, the program assumes
            * they wanted to change the operator.
@@ -181,14 +171,10 @@ function captureInput(input) {
     case 'extra-credit':
       // Placeholder for extra credit assignment.
       break;
-    }
+  }
   // don't forget to account for negative values
 
   populateDisplay(userInput, inputHist);
-
-  if (userInput === 'ಠ_ಠ'){
-    clearDisplay();
-  }
 }
 
 function populateDisplay(string, array) {
@@ -196,6 +182,10 @@ function populateDisplay(string, array) {
 
   upperDisplay.textContent = upperDisplayText;
   lowerDisplay.textContent = string;
+
+  if (isNaN(lowerDisplay.textContent)) {
+    clearDisplay();
+  }
 }
 
 function clearDisplay() {

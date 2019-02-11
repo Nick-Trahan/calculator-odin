@@ -361,6 +361,21 @@ body {
   background: linear-gradient(45deg, rgb(63,76,107) 0%,rgb(63,76,107) 100%);
 }
 
+header {
+  font-family: 'VT323', monospace;
+  text-align: center;
+  color: lightgray;
+}
+
+.title {
+  font-size: 4em;
+  margin-bottom: 0;
+}
+
+.by-line{
+  margin: 0;
+}
+
 .calc-body {
   display: grid;
   grid-template-areas:

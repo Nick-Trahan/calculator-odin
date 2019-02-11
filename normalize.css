@@ -455,6 +455,16 @@ header {
   color: black; /*This keeps Safari from changing the button label's color to white while the button is clicked.*/
 }
 
+.operators {
+  background: darkgray;
+  color: white;
+}
+
+#button-clear {
+  background: crimson;
+  color: white;
+}
+
 #button-add {
   grid-row: span 2;
 }

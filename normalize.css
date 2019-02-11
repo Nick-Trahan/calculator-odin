@@ -445,6 +445,7 @@ header {
   background: radial-gradient(ellipse at center, rgb(255,255,255) 0%,rgb(246,246,246) 47%,rgb(237,237,237) 100%);
 
   border: 2px solid grey;
+  border-radius: 10px;
 }
 
 .calc-button:active {

@@ -90,91 +90,98 @@ buttonContainer.addEventListener('click', (event) => {
 function captureInput(input) {
   switch (input.classList[1]) {
     case 'numbers':
-      if (inputHist.length === 4) {
-        clearDisplay();
-
-      } else if (userInput.length > 14) {
-        return;
-      }
-
-      userInput += input.textContent;
+      parseNumbers(input);
       break;
 
     case 'special':
-      /* This allows the 'clear' button to function by simply emptying the
-       * userInput and inputHist variables.
-       */
-      if (input.textContent === 'C') {
-        clearDisplay();
-
-      } else if (input.textContent === '=') {
-        if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
-          0) {
-          inputHist.splice(2, 0, Number(userInput), input.textContent);
-          userInput = operate(inputHist);
-
-          // This is to prevent overflowing the display.
-          if (userInput.length > 14) {
-            userInput = 'ERROR :\'(';
-          }
-
-          populateDisplay(userInput, inputHist);
-        }
-        return;
-      }
+      parseSpecial(input);
       break;
 
     case 'operators':
-      if (inputHist.length === 0 && userInput.length > 0) {
-        inputHist.unshift(Number(userInput), input.textContent);
-        userInput = '';
-
-        /*
-         * This block accounts for what happens when a user clicks an
-         * operator to begin their next calculation instead of the equals sign.
-         */
-      } else if (inputHist.length === 2) {
-        if (userInput.length > 0) {
-          inputHist[2] = Number(userInput);
-          //FIX DIVIDE BY ZERO BUG HERE (temp solution)
-          let calc = Number(operate(inputHist));
-
-          if (isNaN(calc)) {
-            userInput = operate(inputHist);
-
-          } else {
-            inputHist.splice(0, 3, calc, input.textContent);
-            userInput = '';
-          }
-
-          /*
-           * If the user doesn't input a number beforehand, the program assumes
-           * they wanted to change the operator.
-           */
-        } else {
-          inputHist[1] = input.textContent;
-        }
-
-        /*
-         * This block accounts for when a user clicks an operator after just
-         * completing another calculation with the equals sign.
-         */
-      } else if (inputHist.length === 4 && userInput.length > 0) {
-        inputHist.splice(0, 4, Number(userInput), input.textContent);
-        userInput = '';
-
-      } else if (input.textContent === '-') {
-        // Placeholder for extra credit assignment.
-        break;
-      }
+      parseOperators(input);
+      break;
 
     case 'extra-credit':
       // Placeholder for extra credit assignment.
       break;
   }
   // don't forget to account for negative values
-
   populateDisplay(userInput, inputHist);
+}
+
+function parseNumbers(input) {
+  if (inputHist.length === 4) {
+    clearDisplay();
+
+  } else if (userInput.length > 14) {
+    return;
+  }
+
+  userInput += input.textContent;
+}
+
+function parseSpecial(input) {
+  /* This allows the 'clear' button to function by emptying the
+   * userInput and inputHist variables.
+   */
+  if (input.textContent === 'C') {
+    clearDisplay();
+
+  } else if (input.textContent === '=') {
+    if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
+      0) {
+      inputHist.splice(2, 0, Number(userInput), input.textContent);
+      userInput = operate(inputHist);
+
+      // This is to prevent overflowing the display.
+      if (userInput.length > 14) {
+        userInput = 'ERROR :\'(';
+      }
+    }
+  }
+}
+
+function parseOperators(input) {
+  if (inputHist.length === 0 && userInput.length > 0) {
+    inputHist.unshift(Number(userInput), input.textContent);
+    userInput = '';
+    /*
+     * This block accounts for what happens when a user clicks an
+     * operator to begin their next calculation instead of the equals sign.
+     */
+  }
+  else if (inputHist.length === 2) {
+    if (userInput.length > 0) {
+      inputHist[2] = Number(userInput);
+      //FIX DIVIDE BY ZERO BUG HERE (temp solution)
+      let calc = Number(operate(inputHist));
+      if (isNaN(calc)) {
+        userInput = operate(inputHist);
+      }
+      else {
+        inputHist.splice(0, 3, calc, input.textContent);
+        userInput = '';
+      }
+      /*
+       * If the user doesn't input a number beforehand, the program assumes
+       * they wanted to change the operator.
+       */
+    }
+    else {
+      inputHist[1] = input.textContent;
+    }
+    /*
+     * This block accounts for when a user clicks an operator after just
+     * completing another calculation with the equals sign.
+     */
+  }
+  else if (inputHist.length === 4 && userInput.length > 0) {
+    inputHist.splice(0, 4, Number(userInput), input.textContent);
+    userInput = '';
+  }
+  else if (input.textContent === '-') {
+    // Placeholder for extra credit assignment.
+  }
 }
 
 function populateDisplay(string, array) {

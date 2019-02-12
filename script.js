@@ -61,13 +61,8 @@ function createButtons() {
     ['7', 'seven', 'numbers'], ['8', 'eight', 'numbers'],
     ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'],
     ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
-    ['.', 'decimal', 'extra-credit'], ['+', 'add', 'operators'],
+    ['.', 'decimal', 'special'], ['+', 'add', 'operators'],
     ['=', 'equals', 'special']
-    /*
-     * Handling of the decimal point is an extra credit assignment for this
-     * project. I'll program its logic once the main project is complete. It's
-     * there as a placeholder for now.
-     */
   ];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -83,7 +78,7 @@ function createButtons() {
 }
 
 buttonContainer.addEventListener('click', (event) => {
-  if (event.target === buttonContainer) return;
+  if (event.target === buttonContainer) {return;}
   captureInput(event.target);
 });
 
@@ -100,12 +95,7 @@ function captureInput(input) {
     case 'operators':
       parseOperators(input);
       break;
-
-    case 'extra-credit':
-      // Placeholder for extra credit assignment.
-      break;
   }
-  // don't forget to account for negative values
   populateDisplay(userInput, inputHist);
 }
 
@@ -121,6 +111,10 @@ function parseNumbers(input) {
 }
 
 function parseSpecial(input) {
+  if (input.textContent === '.' && !userInput.includes('.')) {
+    userInput += input.textContent;
+  }
+
   /* This allows the 'clear' button to function by emptying the
    * userInput and inputHist variables.
    */
@@ -142,6 +136,8 @@ function parseSpecial(input) {
 }
 
 function parseOperators(input) {
+  if (userInput === '.') {return;}
+
   if (inputHist.length === 0 && userInput.length > 0) {
     inputHist.unshift(Number(userInput), input.textContent);
     userInput = '';
@@ -190,7 +186,7 @@ function populateDisplay(string, array) {
   upperDisplay.textContent = upperDisplayText;
   lowerDisplay.textContent = string;
 
-  if (isNaN(lowerDisplay.textContent)) {
+  if (isNaN(lowerDisplay.textContent) && lowerDisplay.textContent !== '.') {
     clearDisplay();
   }
 }

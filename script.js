@@ -111,11 +111,22 @@ function parseNumbers(input) {
 }
 
 function parseSpecial(input) {
+  //This allows only one decimal point at a time.
   if (input.textContent === '.' && !userInput.includes('.')) {
     userInput += input.textContent;
   }
 
-  /* This allows the 'clear' button to function by emptying the
+  /*
+   * This enables the backspace button only while there is input on the screen,
+   * and disables it right after a calculation has been performed.
+   */
+  if (input.textContent === '←' && userInput.length > 0 &&
+      inputHist.length !== 4) {
+    userInput = userInput.slice(0, -1);
+  }
+
+  /* 
+   * This allows the 'clear' button to function by emptying the
    * userInput and inputHist variables.
    */
   if (input.textContent === 'C') {
@@ -145,16 +156,18 @@ function parseOperators(input) {
      * This block accounts for what happens when a user clicks an
      * operator to begin their next calculation instead of the equals sign.
      */
-  }
-  else if (inputHist.length === 2) {
+  } else if (inputHist.length === 2) {
     if (userInput.length > 0) {
       inputHist[2] = Number(userInput);
-      //FIX DIVIDE BY ZERO BUG HERE (temp solution)
+
+      /*
+       * This checks the calculation for errors before adding it to the
+       * inputHist array.
+       */
       let calc = Number(operate(inputHist));
       if (isNaN(calc)) {
         userInput = operate(inputHist);
-      }
-      else {
+      } else {
         inputHist.splice(0, 3, calc, input.textContent);
         userInput = '';
       }
@@ -162,20 +175,17 @@ function parseOperators(input) {
        * If the user doesn't input a number beforehand, the program assumes
        * they wanted to change the operator.
        */
-    }
-    else {
+    } else {
       inputHist[1] = input.textContent;
     }
     /*
      * This block accounts for when a user clicks an operator after just
      * completing another calculation with the equals sign.
      */
-  }
-  else if (inputHist.length === 4 && userInput.length > 0) {
+  } else if (inputHist.length === 4 && userInput.length > 0) {
     inputHist.splice(0, 4, Number(userInput), input.textContent);
     userInput = '';
-  }
-  else if (input.textContent === '-') {
+  } else if (input.textContent === '-') {
     // Placeholder for extra credit assignment.
   }
 }

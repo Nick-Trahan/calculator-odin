@@ -369,6 +369,7 @@ header {
 
 .title {
   font-size: 4em;
+
   margin: 0;
 }
 
@@ -396,6 +397,7 @@ header {
 
   width: 90%;
   height: 4.5em;
+
   margin-top: 5%;
   margin-left: auto;
   margin-right:  auto;
@@ -451,14 +453,22 @@ header {
 .calc-button:active {
   transform: scale(0.95);
   transition: 0.05s;
+}
 
-  color: black; /*This keeps Safari from changing the button label's color to white while the button is clicked.*/
+/*
+ * This keeps Safari from changing the button label's color to white while the
+ * button is clicked.
+ */
+.numbers:active,
+.special:active {
+  color: black;
 }
 
 .operators {
   background: darkgray;
   color: white;
 }
+
 
 #button-clear {
   background: firebrick;

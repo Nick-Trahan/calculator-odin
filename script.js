@@ -77,7 +77,7 @@ function createButtons() {
   }
 }
 
-//Keyboard input
+//Keyboard input support.
 window.addEventListener('keydown', (event) => {
   let keyPress = event.key;
 
@@ -99,8 +99,8 @@ window.addEventListener('keydown', (event) => {
     case '-':
     case '/':
     case '*':
-      if (keyPress === '*') {keyPress = 'x'};
-      if (keyPress === '/') {keyPress = '÷'};
+      if (keyPress === '*') { keyPress = 'x' };
+      if (keyPress === '/') { keyPress = '÷' };
       parseOperators(keyPress);
       break;
 
@@ -110,22 +110,25 @@ window.addEventListener('keydown', (event) => {
     case 'Escape':
     case 'Delete':
     case 'Enter':
-      if (keyPress === 'Backspace') {keyPress = '←'};
-      if (keyPress === 'Delete') {keyPress = '←'};
-      if (keyPress === 'Escape') {keyPress = 'C'};
-      if (keyPress === 'Enter') {keyPress = '='};
+      if (keyPress === 'Backspace') { keyPress = '←' };
+      if (keyPress === 'Delete') { keyPress = '←' };
+      if (keyPress === 'Escape') { keyPress = 'C' };
+      if (keyPress === 'Enter') { keyPress = '=' };
       parseSpecial(keyPress);
       break;
+
+    default:
+      return;
   }
   populateDisplay(userInput, inputHist);
 });
 
 buttonContainer.addEventListener('click', (event) => {
   if (event.target === buttonContainer) { return; }
-  captureInput(event.target);
+  sortClickTarget(event.target);
 });
 
-function captureInput(input) {
+function sortClickTarget(input) {
   switch (input.classList[1]) {
     case 'numbers':
       parseNumbers(input.textContent);
@@ -146,6 +149,7 @@ function parseNumbers(input) {
   if (inputHist.length === 4) {
     clearDisplay();
 
+    //This is to prevent overflowing the display.
   } else if (userInput.length > 14) {
     return;
   }
@@ -168,7 +172,7 @@ function parseSpecial(input) {
     userInput = userInput.slice(0, -1);
   }
 
-  /* 
+  /*
    * This allows the 'clear' button to function by emptying the
    * userInput and inputHist variables.
    */
@@ -177,11 +181,11 @@ function parseSpecial(input) {
 
   } else if (input === '=') {
     if (inputHist.length > 1 && inputHist.length != 4 &&
-       userInput.length > 0 && userInput !== '.') {
+        userInput.length > 0 && userInput !== '.') {
       inputHist.splice(2, 0, Number(userInput), input);
       userInput = operate(inputHist);
 
-      // This is to prevent overflowing the display.
+      //This is to prevent overflowing the display.
       if (userInput.length > 14) {
         userInput = 'ERROR :\'(';
       }
@@ -190,11 +194,16 @@ function parseSpecial(input) {
 }
 
 function parseOperators(input) {
+  /**
+   * This line prevents the user from operating on a decimal point with no
+   * numbers.
+   */
   if (userInput === '.') { return; }
 
   if (inputHist.length === 0 && userInput.length > 0) {
     inputHist.unshift(Number(userInput), input);
     userInput = '';
+
     /*
      * This block accounts for what happens when a user clicks an
      * operator to begin their next calculation instead of the equals sign.
@@ -210,10 +219,12 @@ function parseOperators(input) {
       let calc = Number(operate(inputHist));
       if (isNaN(calc)) {
         userInput = operate(inputHist);
+
       } else {
         inputHist.splice(0, 3, calc, input);
         userInput = '';
       }
+
       /*
        * If the user doesn't input a number beforehand, the program assumes
        * they wanted to change the operator.
@@ -221,6 +232,7 @@ function parseOperators(input) {
     } else {
       inputHist[1] = input;
     }
+
     /*
      * This block accounts for when a user clicks an operator after just
      * completing another calculation with the equals sign.
@@ -228,6 +240,7 @@ function parseOperators(input) {
   } else if (inputHist.length === 4 && userInput.length > 0) {
     inputHist.splice(0, 4, Number(userInput), input);
     userInput = '';
+
   } else if (input === '-') {
     // Placeholder for extra credit assignment.
   }

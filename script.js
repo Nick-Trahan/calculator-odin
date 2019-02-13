@@ -133,8 +133,8 @@ function parseSpecial(input) {
     clearDisplay();
 
   } else if (input.textContent === '=') {
-    if (inputHist.length > 1 && inputHist.length != 4 && userInput.length >
-      0) {
+    if (inputHist.length > 1 && inputHist.length != 4 &&
+       userInput.length > 0 && userInput !== '.') {
       inputHist.splice(2, 0, Number(userInput), input.textContent);
       userInput = operate(inputHist);
 

@@ -240,9 +240,6 @@ function parseOperators(input) {
   } else if (inputHist.length === 4 && userInput.length > 0) {
     inputHist.splice(0, 4, Number(userInput), input);
     userInput = '';
-
-  } else if (input === '-') {
-    // Placeholder for extra credit assignment.
   }
 }
 

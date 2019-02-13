@@ -62,7 +62,7 @@ function createButtons() {
     ['9', 'nine', 'numbers'], ['-', 'subtract', 'operators'],
     ['C', 'clear', 'special'], ['0', 'zero', 'numbers'],
     ['.', 'decimal', 'special'], ['+', 'add', 'operators'],
-    ['=', 'equals', 'special']
+    ['←', 'backspace', 'special'], ['=', 'equals', 'special']
   ];
 
   for (let i = 0; i < buttonLabels.length; i++) {
@@ -78,7 +78,7 @@ function createButtons() {
 }
 
 buttonContainer.addEventListener('click', (event) => {
-  if (event.target === buttonContainer) {return;}
+  if (event.target === buttonContainer) { return; }
   captureInput(event.target);
 });
 
@@ -136,7 +136,7 @@ function parseSpecial(input) {
 }
 
 function parseOperators(input) {
-  if (userInput === '.') {return;}
+  if (userInput === '.') { return; }
 
   if (inputHist.length === 0 && userInput.length > 0) {
     inputHist.unshift(Number(userInput), input.textContent);

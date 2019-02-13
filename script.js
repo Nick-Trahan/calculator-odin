@@ -77,6 +77,49 @@ function createButtons() {
   }
 }
 
+//Keyboard input
+window.addEventListener('keydown', (event) => {
+  let keyPress = event.key;
+
+  switch (keyPress) {
+    case '1':
+    case '2':
+    case '3':
+    case '4':
+    case '5':
+    case '6':
+    case '7':
+    case '8':
+    case '9':
+    case '0':
+      parseNumbers(keyPress);
+      break;
+
+    case '+':
+    case '-':
+    case '/':
+    case '*':
+      if (keyPress === '*') {keyPress = 'x'};
+      if (keyPress === '/') {keyPress = '÷'};
+      parseOperators(keyPress);
+      break;
+
+    case '=':
+    case '.':
+    case 'Backspace':
+    case 'Escape':
+    case 'Delete':
+    case 'Enter':
+      if (keyPress === 'Backspace') {keyPress = '←'};
+      if (keyPress === 'Delete') {keyPress = '←'};
+      if (keyPress === 'Escape') {keyPress = 'C'};
+      if (keyPress === 'Enter') {keyPress = '='};
+      parseSpecial(keyPress);
+      break;
+  }
+  populateDisplay(userInput, inputHist);
+});
+
 buttonContainer.addEventListener('click', (event) => {
   if (event.target === buttonContainer) { return; }
   captureInput(event.target);
@@ -85,15 +128,15 @@ buttonContainer.addEventListener('click', (event) => {
 function captureInput(input) {
   switch (input.classList[1]) {
     case 'numbers':
-      parseNumbers(input);
+      parseNumbers(input.textContent);
       break;
 
     case 'special':
-      parseSpecial(input);
+      parseSpecial(input.textContent);
       break;
 
     case 'operators':
-      parseOperators(input);
+      parseOperators(input.textContent);
       break;
   }
   populateDisplay(userInput, inputHist);
@@ -107,20 +150,20 @@ function parseNumbers(input) {
     return;
   }
 
-  userInput += input.textContent;
+  userInput += input;
 }
 
 function parseSpecial(input) {
   //This allows only one decimal point at a time.
-  if (input.textContent === '.' && !userInput.includes('.')) {
-    userInput += input.textContent;
+  if (input === '.' && !userInput.includes('.')) {
+    userInput += input;
   }
 
   /*
    * This enables the backspace button only while there is input on the screen,
    * and disables it right after a calculation has been performed.
    */
-  if (input.textContent === '←' && userInput.length > 0 &&
+  if (input === '←' && userInput.length > 0 &&
       inputHist.length !== 4) {
     userInput = userInput.slice(0, -1);
   }
@@ -129,13 +172,13 @@ function parseSpecial(input) {
    * This allows the 'clear' button to function by emptying the
    * userInput and inputHist variables.
    */
-  if (input.textContent === 'C') {
+  if (input === 'C') {
     clearDisplay();
 
-  } else if (input.textContent === '=') {
+  } else if (input === '=') {
     if (inputHist.length > 1 && inputHist.length != 4 &&
        userInput.length > 0 && userInput !== '.') {
-      inputHist.splice(2, 0, Number(userInput), input.textContent);
+      inputHist.splice(2, 0, Number(userInput), input);
       userInput = operate(inputHist);
 
       // This is to prevent overflowing the display.
@@ -150,7 +193,7 @@ function parseOperators(input) {
   if (userInput === '.') { return; }
 
   if (inputHist.length === 0 && userInput.length > 0) {
-    inputHist.unshift(Number(userInput), input.textContent);
+    inputHist.unshift(Number(userInput), input);
     userInput = '';
     /*
      * This block accounts for what happens when a user clicks an
@@ -168,7 +211,7 @@ function parseOperators(input) {
       if (isNaN(calc)) {
         userInput = operate(inputHist);
       } else {
-        inputHist.splice(0, 3, calc, input.textContent);
+        inputHist.splice(0, 3, calc, input);
         userInput = '';
       }
       /*
@@ -176,16 +219,16 @@ function parseOperators(input) {
        * they wanted to change the operator.
        */
     } else {
-      inputHist[1] = input.textContent;
+      inputHist[1] = input;
     }
     /*
      * This block accounts for when a user clicks an operator after just
      * completing another calculation with the equals sign.
      */
   } else if (inputHist.length === 4 && userInput.length > 0) {
-    inputHist.splice(0, 4, Number(userInput), input.textContent);
+    inputHist.splice(0, 4, Number(userInput), input);
     userInput = '';
-  } else if (input.textContent === '-') {
+  } else if (input === '-') {
     // Placeholder for extra credit assignment.
   }
 }

@@ -153,7 +153,6 @@ function parseNumbers(input) {
   } else if (currentInput.length > 14) {
     return;
   }
-
   currentInput += input;
 }
 
@@ -178,7 +177,6 @@ function parseSpecial(input) {
    */
   if (input === 'C') {
     clearDisplay();
-
   }
   
   if (input === '=') {
@@ -242,6 +240,7 @@ function checkForErrors(input) {
   if (isNaN(calc)) {
     currentInput = operate(calculationLog);
   }
+
   else {
     calculationLog.splice(0, 3, calc, input);
     currentInput = '';
@@ -256,6 +255,20 @@ function populateDisplay(string, array) {
 
   if (isNaN(lowerDisplay.textContent) && lowerDisplay.textContent !== '.') {
     clearDisplay();
+  }
+  
+  keepItTogether();
+}
+
+function keepItTogether() {
+  if (lowerDisplay.textContent === '80085' ||
+      lowerDisplay.textContent === '58008') {
+    lowerDisplay.textContent += ' *giggle*';
+
+  } else if (lowerDisplay.textContent === '80085.00' ||
+      lowerDisplay.textContent === '58008.00') {
+    lowerDisplay.textContent =
+      lowerDisplay.textContent.replace('.00', ' *giggle*');
   }
 }
 

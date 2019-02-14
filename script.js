@@ -261,14 +261,21 @@ function populateDisplay(string, array) {
 }
 
 function keepItTogether() {
+  const byLine = document.querySelector('.by-line');
+  
   if (lowerDisplay.textContent === '80085' ||
-      lowerDisplay.textContent === '58008') {
-    lowerDisplay.textContent += ' *giggle*';
+    lowerDisplay.textContent === '58008' ||
+    lowerDisplay.textContent === '80085.00' ||
+    lowerDisplay.textContent === '58008.00') {
+      byLine.textContent = '*giggle*';
 
-  } else if (lowerDisplay.textContent === '80085.00' ||
-      lowerDisplay.textContent === '58008.00') {
-    lowerDisplay.textContent =
-      lowerDisplay.textContent.replace('.00', ' *giggle*');
+      /*
+       * This sets the amount of time it takes for the calculator to regain
+       * its composure.
+       */
+      setTimeout( () => {
+        byLine.textContent = 'By: Nick Trahan';
+      }, 500);
   }
 }
 

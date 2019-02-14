@@ -4,10 +4,6 @@ const lowerDisplay = document.querySelector('.display-lower');
 
 Window.onload = createButtons();
 
-//find a way to move these from the global scope
-let userInput = '';
-let inputHist = [];
-
 //These are the formulas that will run the calculations=======================//
 function add(a, b) {
   return (a + b).toFixed(2);
@@ -77,6 +73,10 @@ function createButtons() {
   }
 }
 
+//These variables will save the users inputs and calculations.
+let currentInput = '';
+let calculationLog = [];
+
 //Keyboard input support.
 window.addEventListener('keydown', (event) => {
   let keyPress = event.key;
@@ -120,7 +120,7 @@ window.addEventListener('keydown', (event) => {
     default:
       return;
   }
-  populateDisplay(userInput, inputHist);
+  populateDisplay(currentInput, calculationLog);
 });
 
 buttonContainer.addEventListener('click', (event) => {
@@ -142,52 +142,54 @@ function sortClickTarget(input) {
       parseOperators(input.textContent);
       break;
   }
-  populateDisplay(userInput, inputHist);
+  populateDisplay(currentInput, calculationLog);
 }
 
 function parseNumbers(input) {
-  if (inputHist.length === 4) {
+  if (calculationLog.length === 4) {
     clearDisplay();
 
     //This is to prevent overflowing the display.
-  } else if (userInput.length > 14) {
+  } else if (currentInput.length > 14) {
     return;
   }
 
-  userInput += input;
+  currentInput += input;
 }
 
 function parseSpecial(input) {
   //This allows only one decimal point at a time.
-  if (input === '.' && !userInput.includes('.')) {
-    userInput += input;
+  if (input === '.' && !currentInput.includes('.')) {
+    currentInput += input;
   }
 
   /*
    * This enables the backspace button only while there is input on the screen,
    * and disables it right after a calculation has been performed.
    */
-  if (input === '←' && userInput.length > 0 &&
-      inputHist.length !== 4) {
-    userInput = userInput.slice(0, -1);
+  if (input === '←' && currentInput.length > 0 &&
+      calculationLog.length !== 4) {
+    currentInput = currentInput.slice(0, -1);
   }
 
   /*
    * This allows the 'clear' button to function by emptying the
-   * userInput and inputHist variables.
+   * currentInput and calculationLog variables.
    */
   if (input === 'C') {
     clearDisplay();
 
-  } else if (input === '=') {
-    if (inputHist.length > 1 && inputHist.length != 4 &&
-        userInput.length > 0 && userInput !== '.') {
-      inputHist.splice(2, 0, Number(userInput), input);
-      userInput = operate(inputHist);
+  }
+  
+  if (input === '=') {
+    if (calculationLog.length > 1 && calculationLog.length != 4 &&
+        currentInput.length > 0 && currentInput !== '.') {
+      calculationLog.splice(2, 0, Number(currentInput), input);
+      currentInput = operate(calculationLog);
 
       //This is to prevent overflowing the display.
-      if (userInput.length > 14) {
-        userInput = 'ERROR :\'(';
+      if (currentInput.length > 14) {
+        currentInput = 'ERROR :\'(';
       }
     }
   }
@@ -198,48 +200,51 @@ function parseOperators(input) {
    * This line prevents the user from operating on a decimal point with no
    * numbers.
    */
-  if (userInput === '.') { return; }
+  if (currentInput === '.') { return; }
 
-  if (inputHist.length === 0 && userInput.length > 0) {
-    inputHist.unshift(Number(userInput), input);
-    userInput = '';
+  if (calculationLog.length === 0 && currentInput.length > 0) {
+    calculationLog.unshift(Number(currentInput), input);
+    currentInput = '';
 
     /*
      * This block accounts for what happens when a user clicks an
      * operator to begin their next calculation instead of the equals sign.
      */
-  } else if (inputHist.length === 2) {
-    if (userInput.length > 0) {
-      inputHist[2] = Number(userInput);
-
-      /*
-       * This checks the calculation for errors before adding it to the
-       * inputHist array.
-       */
-      let calc = Number(operate(inputHist));
-      if (isNaN(calc)) {
-        userInput = operate(inputHist);
-
-      } else {
-        inputHist.splice(0, 3, calc, input);
-        userInput = '';
-      }
+  } else if (calculationLog.length === 2) {
+    if (currentInput.length > 0) {
+      calculationLog[2] = Number(currentInput);
+      checkForErrors(input);
 
       /*
        * If the user doesn't input a number beforehand, the program assumes
        * they wanted to change the operator.
        */
     } else {
-      inputHist[1] = input;
+      calculationLog[1] = input;
     }
 
     /*
      * This block accounts for when a user clicks an operator after just
      * completing another calculation with the equals sign.
      */
-  } else if (inputHist.length === 4 && userInput.length > 0) {
-    inputHist.splice(0, 4, Number(userInput), input);
-    userInput = '';
+  } else if (calculationLog.length === 4 && currentInput.length > 0) {
+    calculationLog.splice(0, 4, Number(currentInput), input);
+    currentInput = '';
+  }
+}
+
+/*
+ * This checks the calculation for errors before adding it to the
+ * calculationLog array.
+ */
+function checkForErrors(input) {
+  let calc = Number(operate(calculationLog));
+  if (isNaN(calc)) {
+    currentInput = operate(calculationLog);
+  }
+  else {
+    calculationLog.splice(0, 3, calc, input);
+    currentInput = '';
   }
 }
 
@@ -255,6 +260,6 @@ function populateDisplay(string, array) {
 }
 
 function clearDisplay() {
-  userInput = '';
-  inputHist = [];
+  currentInput = '';
+  calculationLog = [];
 }
